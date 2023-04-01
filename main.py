@@ -1,5 +1,4 @@
 import torch
-
 import constants
 
 from datasets.redwood import RedwoodDataset

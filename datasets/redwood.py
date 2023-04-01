@@ -30,10 +30,10 @@ class RedwoodDataset(Dataset):
         video_frames=1000
     ):
         self.metadata_file = metadata
-        self.ids = self._load_ids()
         self.root = root
         self.device = device
         self.video_frames = video_frames
+        self.ids = self._load_ids()
 
     def __getitem__(self, index):
         id, category = self.ids[index]
