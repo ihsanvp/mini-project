@@ -16,8 +16,8 @@ def main():
     dataloader = RedwoodDataLoader(
         dataset,
         data_root="data",
-        batch_size=5,
-        shuffle=True,
+        batch_size=1,
+        shuffle=False,
         max_data_size=constants.GB * 50,
         data_clear_padding=constants. GB * 5
     )
@@ -25,8 +25,8 @@ def main():
     it = iter(dataloader)
 
     batch = next(it)
-    # batch = next(it)
-    # batch = next(it)
+    batch = next(it)
+    batch = next(it)
 
 
 if __name__ == "__main__":

@@ -1,12 +1,11 @@
 from tqdm import tqdm
 import constants
 import json
-import sys
 import requests  # type: ignore
 import cv2
 import torch
-import humanize
 import numpy as np
+import open3d as o3d
 
 from torch.utils.data import Dataset  # type: ignore
 
@@ -43,9 +42,10 @@ class RedwoodDataset(Dataset):
         self._download(id)
 
         f = self._get_files(id)
-        v = self._load_video(f["video"])
+        video = self._load_video(f["video"])
+        vert, face = self._load_mesh(f["mesh"])
 
-        return v, category
+        return video, vert, face, category
 
     def __len__(self):
         return len(self.ids)
@@ -173,3 +173,11 @@ class RedwoodDataset(Dataset):
 
         cap.release()
         return torch.tensor(np.array(buffer, dtype=np.uint8), device=self.device)
+
+    def _load_mesh(self, path):
+        mesh = o3d.io.read_triangle_mesh(str(path))
+
+        vertices = np.asarray(mesh.vertices)
+        faces = np.asarray(mesh.triangles)
+
+        return torch.tensor(vertices, device=self.device), torch.tensor(faces, device=self.device)
